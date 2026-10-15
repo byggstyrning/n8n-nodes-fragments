@@ -34,7 +34,7 @@
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint nodes package.json",
-    "test": "pnpm build && node --test test/",
+    "test": "pnpm build && node --test test/*.test.mjs",
     "compare": "node scripts/compare-with-importer.mjs",
     "prepublishOnly": "pnpm typecheck && pnpm lint && pnpm test"
   },
