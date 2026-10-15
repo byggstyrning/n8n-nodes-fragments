@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 — 2026-10-15
+
+No changes to the node. This is the first release published from GitHub Actions through npm Trusted
+Publishing, with a provenance statement. 0.1.0 was published by hand, without provenance.
+
 ## 0.1.0 — 2026-10-15
 
 First release.

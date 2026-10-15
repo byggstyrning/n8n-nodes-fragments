@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-fragments",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n node that converts IFC files to That Open Fragments (.frag) inside the n8n instance, in an isolated child process",
   "keywords": [
     "n8n-community-node-package",
