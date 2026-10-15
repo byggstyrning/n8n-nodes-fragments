@@ -3,11 +3,9 @@
 # repository and commit. npm only issues provenance for public repositories on
 # GitHub-hosted runners.
 #
-# Auth, see RELEASING.md:
-#   - first release: a short-lived granular token in the NPM_TOKEN secret
-#     (Trusted Publishing can't be set up before the package exists);
-#   - afterwards: npm Trusted Publishing (OIDC) for owner "byggstyrning",
-#     repository "n8n-nodes-fragments", workflow "publish.yml"; delete NPM_TOKEN.
+# Auth is npm Trusted Publishing (OIDC) only: the package trusts owner
+# "byggstyrning", repository "n8n-nodes-fragments", workflow "publish.yml".
+# No npm token or secret is involved. See RELEASING.md.
 
 name: Publish
 
@@ -50,10 +48,4 @@ jobs:
           fi
 
       - name: Publish (prepublishOnly runs typecheck, lint and test, which builds)
-        run: |
-          if [ -n "$NPM_TOKEN" ]; then
-            npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          fi
-          npm publish --provenance --access public
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --access public

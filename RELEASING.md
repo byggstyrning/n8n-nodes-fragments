@@ -10,28 +10,34 @@ must pass. npm only issues provenance for public GitHub repositories on GitHub-h
 2. Run `pnpm typecheck && pnpm lint && pnpm test`. After a dependency bump, also run `pnpm compare`
    on a few real models.
 3. Commit, then `git tag v<version> && git push origin main v<version>`.
-4. Check the run under Actions and the "Provenance" badge on npmjs.com.
+4. Check the run under Actions, and the provenance badge on npmjs.com (from 0.1.1 on).
 
-## First release (one time)
+## Auth: Trusted Publishing
 
-npm can't set up Trusted Publishing for a package that doesn't exist yet. So bootstrap it with a
-short-lived token; the first release still comes from CI with provenance:
+The workflow authenticates with npm Trusted Publishing (OIDC). There is no npm token or repository
+secret. The trust is configured on npmjs.com under `n8n-nodes-fragments` → Settings → **Trusted
+Publisher**, with these fields (case-sensitive):
 
-1. On npmjs.com, create a **granular access token**:
-   - read/write;
-   - scoped to "all packages", or to the not-yet-existing name if offered;
-   - 1-day expiry.
-2. Add it to the repository as the Actions secret `NPM_TOKEN`.
-3. Push the `v0.1.0` tag.
-4. On npmjs.com, open `n8n-nodes-fragments` → Settings → **Trusted publishing**, and add a
-   publisher (fields are case-sensitive):
-   - GitHub Actions;
-   - owner `byggstyrning`;
-   - repository `n8n-nodes-fragments`;
-   - workflow `publish.yml`;
-   - no environment.
-5. Delete the `NPM_TOKEN` secret and revoke the token. Optionally set the package's publishing
-   access to "Require two-factor authentication and disallow tokens".
+- GitHub Actions;
+- organization or user `byggstyrning`;
+- repository `n8n-nodes-fragments`;
+- workflow filename `publish.yml`;
+- environment left empty.
+
+If you rename the workflow file or move the repository, update that entry first, or the publish fails
+with a 404/403.
+
+## How 0.1.0 was published (history)
+
+0.1.0 was published by hand on 2026-10-15, with `npm publish` from a clean checkout of the
+`v0.1.0` tag, using an interactive 2FA login. It has no provenance; later versions have it.
+
+- A brand-new package can't use Trusted Publishing, because the trust can only be configured once
+  the package exists.
+- A granular token was tried for the first release, and npm still demanded an OTP (`EOTP`): it
+  won't create a new package from a token.
+- The locally built tarball had the same shasum as the CI build (`830be031…`), so the build is
+  reproducible.
 
 ## n8n
 
